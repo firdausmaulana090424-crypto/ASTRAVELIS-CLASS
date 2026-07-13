@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uang Kas Kelas X-3</title>
+    
+    <meta name="theme-color" content="#061f14">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kas X-3">
+    <link rel="apple-touch-icon" href="logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & MODERN VARIABLES (NATURE THEME) --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Tema Gelap Alam (Default) */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #04140d 0%, #082216 50%, #0e3323 100%);
+            --primary-color: #10b981; 
+            --primary-light: #34d399;
+            --accent-color: #84cc16; 
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --glass-bg: rgba(4, 20, 13, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --input-bg: rgba(4, 20, 13, 0.6);
+            --table-header-bg: rgba(255, 255, 255, 0.02);
+            --shadow-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Tema Terang Alam */
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #eefcf4 0%, #dcfce7 50%, #bbf7d0 100%);
+            --primary-color: #059669;
+            --primary-light: #10b981;
+            --accent-color: #4d7c0f;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(5, 150, 105, 0.15);
+            --card-bg: rgba(5, 150, 105, 0.04);
+            --card-border: rgba(5, 150, 105, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --table-header-bg: rgba(5, 150, 105, 0.06);
+            --shadow-color: rgba(4, 47, 31, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- THEME TOGGLE BUTTON --- */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            font-size: 18px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            z-index: 10;
+        }
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+        }
+
+        /* --- CONTAINER PORTAL --- */
+        .container {
+            width: 100%;
+            max-width: 1100px; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 36px;
+            box-shadow: 0 30px 60px -15px var(--shadow-color);
+            padding: 40px 30px;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- BRANDING (HEADER) --- */
+        .brand-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .logo-container {
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .brand-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--text-main), var(--primary-light), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .brand-section p {
+            font-size: 13px;
+            color: var(--text-sub);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- FOTO BERSAMA ANGGOTA KELAS --- */
+        .class-photo-banner {
+            width: 100%;
+            height: 200px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 24px var(--shadow-color);
+            position: relative;
+        }
+        .class-photo-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .class-photo-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 15px 20px;
+            display: flex;
+            align-items: flex-end;
+        }
+        .class-photo-overlay span {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- WIDGET ULANGAN TERDEKAT DI DASHBOARD --- */
+        .notice-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.1);
+        }
+        .notice-banner.no-exam {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.03) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.05);
+        }
+        .notice-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .notice-banner:not(.no-exam) .notice-icon { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .notice-banner.no-exam .notice-icon { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        
+        .notice-info { flex-grow: 1; }
+        .notice-info h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .notice-banner:not(.no-exam) .notice-info h4 { color: #f87171; }
+        .notice-banner.no-exam .notice-info h4 { color: #34d399; }
+        .notice-info p { font-size: 13px; color: var(--text-main); font-weight: 600; }
+        .notice-info span { font-size: 11px; color: var(--text-sub); display: block; margin-top: 2px; }
+
+        /* --- MENU LAYOUT UTAMA --- */
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary-light);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .card-menu {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            padding: 24px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .card-menu:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.15);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .card-menu:hover .icon-box {
+            transform: scale(1.08) rotate(3deg);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .ic-jadwal { background: rgba(14, 165, 233, 0.15); color: #38bdf8; }
+        .ic-ulangan { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .ic-materi { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .ic-kas { background: rgba(132, 204, 22, 0.15); color: #a3e635; }
+        .ic-admin { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
+        .card-menu h3 { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
+        .card-menu p { font-size: 11.5px; color: var(--text-sub); font-weight: 400; line-height: 1.3; }
+
+        .admin-trigger-bar {
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+            padding-top: 15px;
+        }
+        .btn-admin-gate {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-admin-gate:hover {
+            color: #fb7185;
+            background: rgba(244, 63, 94, 0.05);
+            border-color: rgba(244, 63, 94, 0.2);
+        }
+
+        /* --- DESAIN HALAMAN FITUR --- */
+        .content-header { display: flex; align-items: center; gap: 16px; margin-bottom: 35px; }
+        .content-header h2 { font-size: 24px; font-weight: 800; background: linear-gradient(to right, var(--text-main), var(--text-sub)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            margin-bottom: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th { background: var(--table-header-bg); color: var(--text-main); padding: 18px 20px; font-weight: 700; border-bottom: 1px solid var(--card-border); }
+        td { padding: 18px 20px; border-bottom: 1px solid var(--card-border); color: var(--text-main); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        .kolom-aksi { display: none; text-align: center; }
+        body[data-status-admin="aktif"] .kolom-aksi { display: table-cell; }
+
+        .btn-delete-row {
+            background: rgba(239, 68, 68, 0.15); color: #f87171; border: none;
+            padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-delete-row:hover { background: #ef4444; color: white; }
+
+        /* --- WADAH BERKAS MEDIA JADWAL --- */
+        .media-container {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: auto;
+        }
+        .media-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            display: block;
+        }
+
+        /* --- BACK & ACTION BUTTONS --- */
+        .btn-back {
+            width: 100%; max-width: 240px; margin: 30px auto 0 auto; padding: 14px;
+            background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border);
+            border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+            display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.06); color: var(--primary-light); border-color: var(--primary-color); }
+        .btn-logout { background: rgba(244, 63, 94, 0.1); color: #fb7185; border-color: rgba(244, 63, 94, 0.15); }
+        .btn-logout:hover { background: #f43f5e; color: white; }
+
+        /* --- ADMIN PANEL CONTROL --- */
+        .admin-layout-container {
+            display: grid; 
+            grid-template-columns: 1.3fr 1fr; 
+            gap: 30px; 
+            margin-bottom: auto;
+            align-items: start;
+        }
+        
+        .form-box { 
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%); 
+            border: 1px solid var(--card-border); 
+            border-radius: 28px; 
+            padding: 32px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .form-box h3 { 
+            font-size: 16px; 
+            font-weight: 700; 
+            margin-bottom: 24px; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 14px;
+        }
+        
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin-bottom: 10px; 
+            color: var(--text-sub); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        .form-group input {
+            width: 100%; 
+            padding: 14px 18px; 
+            background: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 16px; 
+            font-size: 14px;
+            color: var(--text-main); 
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .form-group input:focus { 
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .btn-submit {
+            width: 100%; 
+            padding: 16px; 
+            background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%); 
+            color: white;
+            border: none; 
+            border-radius: 16px; 
+            font-size: 14px; 
+            font-weight: 700; 
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        }
+        .btn-submit:hover { 
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%); 
+            box-shadow: 0 8px 25px -4px rgba(16, 185, 129, 0.45);
+            transform: translateY(-2px);
+        }
+        
+        .btn-drive {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 14px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-main);
+            border-radius: 14px;
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+        .btn-drive:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+        }
+
+        /* --- KAS & IFRAME --- */
+        .iframe-container { width: 100%; height: 68vh; border-radius: 24px; overflow: hidden; border: 1px solid var(--card-border); margin-bottom: auto; }
+        .iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- RESPONSIVE OPTIMIZATION --- */
+        @media (max-width: 1024px) {
+            .grid-menu { grid-template-columns: repeat(2, 1fr); }
+            .admin-layout-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 25px 15px; border-radius: 28px; }
+            .brand-section h1 { font-size: 24px; }
+            .class-photo-banner { height: 140px; margin-bottom: 20px; }
+            .grid-menu { grid-template-columns: 1fr; gap: 12px; }
+            .btn-back { max-width: 100%; }
+            .form-grid-2 { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="theme-toggle-btn" onclick="toggleTheme()" title="Ubah Tema Warna">
+    <i class="fa-solid fa-moon" id="theme-icon"></i>
+</button>
+
+<div class="container">
+
+    <div id="main-dashboard" class="page active">
+        <div class="brand-section">
+            <div class="logo-wrapper">
+                <div class="logo-container">
+                    <img src="logo.png" alt="Logo ASTRAVELIS">
+                </div>
+            </div>
+            <h1>ASTRAVELIS CLASS</h1>
+            <p>Portal Sistem Informasi & Akademik Interaktif X-3</p>
+        </div>
+
+        <div class="class-photo-banner">
+            <img src="foto-kelas.jpg" alt="Foto Anggota Kelas X-3" onerror="this.src='https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000';">
+            <div class="class-photo-overlay">
+                <span><i class="fa-solid fa-users"></i> Member of Astravelis X-3</span>
+            </div>
+        </div>
+
+        <div id="dashboard-notice" class="notice-banner no-exam">
+            <div class="notice-icon"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+            <div class="notice-info">
+                <h4>Memeriksa Agenda...</h4>
+                <p>Sinkronisasi berkas ujian dari cloud server...</p>
+            </div>
+        </div>
+
+        <h2 class="section-title"><i class="fa-solid fa-seedling"></i> Layanan Akademik Siswa</h2>
+
+        <div class="grid-menu">
+            <div class="card-menu" onclick="bukaHalaman('page-jadwal')">
+                <div class="icon-box ic-jadwal"><i class="fa-solid fa-calendar-days"></i></div>
+                <h3>Jadwal Pelajaran</h3>
+                <p>Lihat berkas/gambar jadwal KBM terupdate</p>
+            </div>
+            <div class="card-menu" onclick="bukaHalaman('page-ulangan')">
+                <div class="icon-box ic-ulangan"><i class="fa-solid fa-file-signature"></i></div>
+                <h3>Agenda Ulangan</h3>
+                <p>Jadwal tes terdekat & otomatisasi hapus</p>
+            </div>
+            
+            <a href="https://drive.google.com/drive/folders/10tKD3rfBM5zUlNKjmgxngLJkD3JzQS8S?usp=drive_link" target="_blank" class="card-menu">
+                <div class="icon-box ic-materi"><i class="fa-solid fa-folder-open"></i></div>
+                <h3>Materi Pelajaran</h3>
+                <p>Bank modul materi via Google Drive</p>
+            </a>
+            
+            <div class="card-menu" onclick="verifikasiSandiServer('page-kas', 'Akses Menu Finansial Kas')">
+                <div class="icon-box ic-kas"><i class="fa-solid fa-wallet"></i></div>
+                <h3>Uang Kas Kelas</h3>
+                <p>Rekap log keuangan, tunggakan & saldo</p>
+            </div>
+        </div>
+
+        <div class="admin-trigger-bar">
+            <button class="btn-admin-gate" onclick="verifikasiSandiServer('page-admin', 'Masuk Panel Admin Konsol')">
+                <i class="fa-solid fa-user-gear"></i> Konsol Administrator Panel
+            </button>
+        </div>
+    </div>
+
+    <div id="page-jadwal" class="page">
+        <div class="content-header">
+            <div class="icon-box ic-jadwal" style="margin-bottom:0; width:48px; height:48px; font-size:20px;"><i class="fa-solid fa-calendar-days"></i></div>
+            <h2>Jadwal Pelajaran Kelas X-3</h2>
+        </div>
+        
+        <div class="media-container">
+            <img src="jadwal-x3.png" alt="Berkas Jadwal Pelajaran Kelas X-3" onerror="this.style.display='none'; document.getElementById('drive-jadwal-fallback').style.display='block';">
+            
+            <div id="drive-jadwal-fallback" style="display:none; padding:40px; color:var(--text-sub);">
+                <i class="fa-solid fa-image-user" style="font-size:32px; margin-bottom:10px;"></i>
+                <p>Gambar berkas <strong>jadwal-x3.png</strong> belum di-upload ke GitHub atau link Google Drive belum dikonfigurasi.</p>
+            </div>
+        </div>
+        
+        <button class="btn-back" onclick="kembaliKeDashboard()"><i class="fa-solid fa-arrow-left-long"></i> Kembali ke Dashboard</button>
+    </div>
+
+    <div id="page-ulangan" class="page">
+        <div class="content-header">
+            <div class="icon-box ic-ulangan" style="margin-bottom:0; width:48px; height:48px; font-size:20px;"><i class="fa-solid fa-file-signature"></i></div>
+            <h2>Agenda Ujian & Ulangan Aktif</h2>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th>Tanggal Pelaksanaan</th><th>Mata Pelajaran</th><th>Kategori Ujian</th><th>Keterangan Cakupan</th><th class="kolom-aksi" style="width: 90px;">Tindakan</th></tr>
+                </thead>
+                <tbody id="tabel-ulangan-body">
+                    <tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-sub);"><i class="fa-solid fa-circle-notch fa-spin"></i> Memeriksa agenda ujian aktif...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="btn-back" onclick="kembaliKeDashboard()"><i class="fa-solid fa-arrow-left-long"></i> Kembali ke Dashboard</button>
+    </div>
+
+    <div id="page-kas" class="page">
+        <div class="content-header">
+            <div class="icon-box ic-kas" style="margin-bottom:0; width:48px; height:48px; font-size:20px;"><i class="fa-solid fa-wallet"></i></div>
+            <h2>Manajemen Transparansi Kas Kelas</h2>
+        </div>
+        <div class="iframe-container"><iframe src="https://firdausmaulana090424-crypto.github.io/Kas-X-3/"></iframe></div>
+        <button class="btn-back" onclick="kembaliKeDashboard()"><i class="fa-solid fa-arrow-left-long"></i> Kembali ke Dashboard</button>
+    </div>
+
+    <div id="page-admin" class="page">
+        <div class="content-header">
+            <div class="icon-box ic-admin" style="margin-bottom:0; width:48px; height:48px; font-size:20px;"><i class="fa-solid fa-user-gear"></i></div>
+            <h2>Administrator Command Center</h2>
+        </div>
+        
+        <div class="admin-layout-container">
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                <div class="form-box">
+                    <h3><i class="fa-solid fa-image" style="color:#38bdf8;"></i> Cara Perbarui Gambar Jadwal</h3>
+                    <div style="font-size:13.5px; line-height:1.6; color:var(--text-sub); padding:10px 0;">
+                        <p style="margin-bottom:10px;">Untuk mengganti file jadwal pelajaran tanpa perlu input ketik satu-satu lagi:</p>
+                        <ol style="margin-left:20px; display:flex; flex-direction:column; gap:8px;">
+                            <li>Simpan atau eksport file jadwal baru kamu menjadi format gambar png/jpg.</li>
+                            <li>Beri nama file tersebut dengan nama <strong>jadwal-x3.png</strong></li>
+                            <li>Upload file gambar baru tersebut ke repositori GitHub kamu untuk menggantikan file lama.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="form-box">
+                    <h3><i class="fa-solid fa-calendar-check" style="color:#f87171;"></i> Sisipkan Agenda Ulangan Baru</h3>
+                    <form id="form-ulangan" onsubmit="kirimData(event, 'ulangan')">
+                        <div class="form-grid-2">
+                            <div class="form-group"><label>Tanggal Penyelenggaraan</label><input type="date" id="u-tanggal" required></div>
+                            <div class="form-group"><label>Mata Pelajaran Terkait</label><input type="text" id="u-mapel" required placeholder="Contoh: Matematika"></div>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group"><label>Kategori Penilaian</label><input type="text" id="u-jenis" required placeholder="Contoh: Ulangan Harian 1"></div>
+                            <div class="form-group"><label>Cakupan Materi / Keterangan</label><input type="text" id="u-ket" placeholder="Contoh: Bab 2 Teori Atom"></div>
+                        </div>
+                        <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);">Publikasikan Agenda Ujian</button>
+                    </form>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                <div class="form-box" style="border-color: rgba(234, 179, 8, 0.2);">
+                    <h3 style="color:#facc15;"><i class="fa-solid fa-bell"></i> Manajemen Notifikasi</h3>
+                    <p style="font-size:13px; color:var(--text-sub); line-height:1.6; margin-bottom:20px;">
+                        Kirimkan sinyal pengingat instan ke seluruh sistem web PWA siswa secara serentak H-1 sebelum pengerjaan ujian dimulai.
+                    </p>
+                    <button class="btn-submit" style="background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color:#0f172a; font-weight:700; box-shadow: 0 4px 15px rgba(234, 179, 8, 0.25);" onclick="alert('Fitur Push Notifikasi PWA Berhasil Disinkronkan ke HP Siswa!')">
+                        <i class="fa-solid fa-paper-plane"></i> Blast Notifikasi H-1
+                    </button>
+                </div>
+
+                <div class="form-box">
+                    <h3><i class="fa-solid fa-link" style="color:var(--primary-light);"></i> Cloud Shortcut</h3>
+                    <p style="font-size:13px; color:var(--text-sub); line-height:1.6; margin-bottom:20px;">Atur folder data berkas, gambar, and rekap arsip lewat ekosistem Google Drive.</p>
+                    <a href="https://drive.google.com/" target="_blank" class="btn-drive"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Root Google Drive</a>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; width: 100%; max-width: 550px; margin: 35px auto 0 auto;">
+            <button class="btn-back" style="margin:0; flex:1;" onclick="kembaliKeDashboard()"><i class="fa-solid fa-house"></i> Dashboard Utama</button>
+            <button class="btn-back btn-logout" style="margin:0; flex:1;" onclick="logoutAdmin()"><i class="fa-solid fa-lock"></i> Kunci Panel</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwhnPv9w9jIyo9lciSYi7FqjL4lKFPSkmZ0uiZZrSNWWpH1jltLiRVrK7Tqqun7T1kK/exec";
+    
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        if (currentTheme === 'light') {
+            document.documentElement.removeAttribute('data-theme');
+            themeIcon.className = 'fa-solid fa-moon';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'fa-solid fa-sun';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+    }
+
+    async function hitungSha256(string) {
+        const utf8 = new TextEncoder().encode(string);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verifikasiSandiServer(targetHalaman, konteksPesan) {
+        const sandiTersimpan = document.body.dataset.lastSandi;
+        if (sandiTersimpan && sandiTersimpan.trim() !== "") {
+            if(targetHalaman) bukaHalaman(targetHalaman);
+            return true;
+        }
+
+        const inputSandi = prompt(`Otorisasi Diperlukan. Masukkan sandi pengurus untuk [${konteksPesan}]:`);
+        if (inputSandi === null || inputSandi.trim() === "") return false; 
+
+        const bodyElement = document.body;
+        bodyElement.style.cursor = "wait";
+
+        try {
+            const sandiHash = await hitungSha256(inputSandi.trim());
+            
+            const params = new URLSearchParams();
+            params.append("type", "cek_password");
+            params.append("passwordHash", sandiHash);
+
+            await fetch(API_URL, {
+                method: "POST",
+                mode: "cors", 
+                body: params
+            });
+
+            bodyElement.dataset.lastSandi = inputSandi.trim(); 
+            bodyElement.setAttribute("data-status-admin", "aktif");
+            if(targetHalaman) bukaHalaman(targetHalaman);
+            return true;
+
+        } catch (error) {
+            alert("Sistem Keamanan Gagal Terhubung.");
+            return false;
+        } finally {
+            bodyElement.style.cursor = "default";
+        }
+    }
+
+    function logoutAdmin() {
+        document.body.removeAttribute("data-status-admin");
+        document.body.dataset.lastSandi = "";
+        alert("Sesi Administrator Dikunci Kembali.");
+        kembaliKeDashboard();
+        muatDataDariSheets();
+    }
+
+    function bukaHalaman(idHalaman) {
+        document.querySelectorAll('.page').forEach(h => h.classList.remove('active'));
+        document.getElementById(idHalaman).classList.add('active');
+        if(idHalaman === 'page-ulangan') {
+            muatDataDariSheets(); 
+        }
+    }
+
+    function kembaliKeDashboard() { bukaHalaman('main-dashboard'); }
+
+    async function muatDataDariSheets() {
+        const tabelUlangan = document.getElementById('tabel-ulangan-body');
+        const dNotice = document.getElementById('dashboard-notice');
+        
+        tabelUlangan.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-sub);"><i class="fa-solid fa-circle-notch fa-spin"></i> Sinkronisasi Waktu Agenda...</td></tr>';
+
+        try {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+
+            tabelUlangan.innerHTML = '';
+            const hariIni = new Date();
+            hariIni.setHours(0, 0, 0, 0);
+            
+            let agendaAktifCount = 0;
+            let ujianTerdekat = null;
+
+            if(data.ulangan && data.ulangan.length > 0) {
+                let urutanAgenda = [...data.ulangan].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+
+                for (let index = data.ulangan.length - 1; index >= 0; index--) {
+                    const row = data.ulangan[index];
+                    const tanggalUjian = new Date(row.tanggal);
+                    tanggalUjian.setHours(0,0,0,0);
+
+                    if (tanggalUjian < hariIni) {
+                        eksekusiHapusLatarBelakang('ulangan', index);
+                        continue; 
+                    }
+
+                    agendaAktifCount++;
+                    tabelUlangan.innerHTML = `<tr>
+                        <td><span style="color:#f87171; font-weight:700;"><i class="fa-regular fa-calendar-check"></i> ${row.tanggal}</span></td>
+                        <td><strong>${row.mapel}</strong></td>
+                        <td><span style="background:rgba(248,113,113,0.1); color:#f87171; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:600;">${row.jenis}</span></td>
+                        <td>${row.ket}</td>
+                        <td class="kolom-aksi"><button class="btn-delete-row" onclick="hapusBarisData('ulangan', ${index}, '${row.mapel}')"><i class="fa-solid fa-trash-can"></i></button></td>
+                    </tr>` + tabelUlangan.innerHTML;
+                }
+
+                for(let item of urutanAgenda) {
+                    const tgl = new Date(item.tanggal);
+                    tgl.setHours(0,0,0,0);
+                    if(tgl >= hariIni) {
+                        ujianTerdekat = item;
+                        break;
+                    }
+                }
+            }
+
+            if (ujianTerdekat) {
+                dNotice.classList.remove('no-exam');
+                dNotice.innerHTML = `
+                    <div class="notice-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="notice-info">
+                        <h4>Ulangan Terdekat Terdeteksi!</h4>
+                        <p>${ujianTerdekat.mapel} (${ujianTerdekat.jenis})</p>
+                        <span><i class="fa-regular fa-clock"></i> Pelaksanaan: ${ujianTerdekat.tanggal} — ${ujianTerdekat.ket || 'Persiapkan diri kalian!'}</span>
+                    </div>
+                `;
+            } else {
+                dNotice.classList.add('no-exam');
+                dNotice.innerHTML = `
+                    <div class="notice-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="notice-info">
+                        <h4>Status Agenda Aman</h4>
+                        <p>🎉 Bebas Ujian! Tidak ada agenda ulangan aktif terdekat.</p>
+                    </div>
+                `;
+            }
+
+            if(agendaAktifCount === 0) {
+                tabelUlangan.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-sub); padding:40px;">🎉 Bebas Ujian! Tidak ada agenda ulangan aktif terdekat.</td></tr>';
+            }
+        } catch (error) {
+            tabelUlangan.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#f87171; padding:40px;"><i class="fa-solid fa-triangle-exclamation"></i> Gagal Sinkronisasi Agenda.</td></tr>';
+            dNotice.innerHTML = `
+                <div class="notice-icon" style="color:#f87171;"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <div class="notice-info">
+                    <h4 style="color:#f87171;">Koneksi Cloud Terputus</h4>
+                    <p>Gagal memuat info agenda terbaru dari database.</p>
+                </div>
+            `;
+        }
+    }
+
+    async function eksekusiHapusLatarBelakang(tipe, indeks) {
+        try {
+            const params = new URLSearchParams();
+            params.append("type", `hapus_${tipe}`);
+            params.append("index", indeks);
+            params.append("passwordHash", "AUTO_CLEANUP"); 
+
+            await fetch(API_URL, {
+                method: "POST",
+                body: params
+            });
+        } catch (e) { console.log("Pembersihan data usang dilewati."); }
+    }
+
+    async function hapusBarisData(tipe, indeks, namaData) {
+        if (!confirm(`Hapus permanen data ${tipe} "${namaData}" dari database?`)) return;
+        const validSandi = await verifikasiSandiServer(null, `Menghapus Data ${tipe}`);
+        if (!validSandi) return;
+
+        const sandiHash = await hitungSha256((document.body.dataset.lastSandi || "").trim());
+        document.body.style.cursor = "wait";
+        
+        try {
+            const params = new URLSearchParams();
+            params.append("type", `hapus_${tipe}`);
+            params.append("index", indeks);
+            params.append("passwordHash", sandiHash);
+
+            await fetch(API_URL, {
+                method: "POST",
+                body: params
+            });
+            
+            alert("Data berhasil dihapus!");
+            muatDataDariSheets(); 
+        } catch (error) {
+            alert("Kesalahan transmisi data jaringan.");
+        } finally {
+            document.body.style.cursor = "default";
+        }
+    }
+
+    async function kirimData(event, tipe) {
+        event.preventDefault();
+        const validSandi = await verifikasiSandiServer(null, `Menambah Data ${tipe}`);
+        if (!validSandi) return; 
+
+        const sandiHash = await hitungSha256((document.body.dataset.lastSandi || "").trim());
+        
+        const params = new URLSearchParams();
+        params.append("type", tipe);
+        params.append("passwordHash", sandiHash);
+
+        params.append("tanggal", document.getElementById('u-tanggal').value);
+        params.append("mapel", document.getElementById('u-mapel').value);
+        params.append("jenis", document.getElementById('u-jenis').value);
+        params.append("ket", document.getElementById('u-ket').value);
+
+        const btn = event.target.querySelector('button[type="submit"]');
+        const teksAwal = btn.innerText;
+        btn.innerText = "Menyimpan data...";
+        btn.disabled = true;
+
+        try {
+            await fetch(API_URL, { 
+                method: "POST", 
+                body: params 
+            });
+            
+            alert("Sukses! Agenda ujian berhasil ditambahkan.");
+            event.target.reset();
+            muatDataDariSheets(); 
+        } catch (error) {
+            alert("Terjadi kesalahan pendaftaran data ke server cloud.");
+        } finally {
+            btn.innerText = teksAwal;
+            btn.disabled = false;
+        }
+    }
+
+    window.onload = muatDataDariSheets;
+</script>
+</body>
+</html>
